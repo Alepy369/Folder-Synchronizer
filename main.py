@@ -3,11 +3,15 @@ import os
 import sys
 import logging
 import datetime
- 
+
 from sync.sync import (
     get_source_content,
     get_replica_content,
     check_files_and_folders,
+    create_file,
+    create_dir,
+    copy,
+    remove,
     log_create,
     log_copy,
     log_remove,
@@ -77,15 +81,15 @@ def main(source_path, replica_path, sync_interval, log_file_path):
     
         elif option == '3':
             print('Creating a file or folder...')
-            log_create()
+            
     
         elif option == '4':
             print('Copying a file or folder...')
-            log_copy()
+            
     
         elif option == '5':
             print('Removing a file or folder...')
-            log_remove()
+            
         
         elif option == '6':
             print(f'Periodicaly syncing every {sync_interval} minutes...')
@@ -108,8 +112,7 @@ def main(source_path, replica_path, sync_interval, log_file_path):
                         if sync_interval == 60 and time_difference.total_seconds() >= 3600:
                             print('Syncing folders...')
                     break
-            
-    
+        
         elif option.lower() == 'q':
             print('Quitting...')
             sys.exit(0)
