@@ -13,6 +13,9 @@ list_dir_replica=[]
 list_file_replica=[]
 
 
+source_path = '/home/alepy/Folder-Synchronizer/source'
+replica_path = '/home/alepy/Folder-Synchronizer/replica'
+
 def get_source_content(directory):
 
     for item in os.listdir(directory):
@@ -46,6 +49,9 @@ def get_replica_content(directory):
             get_source_content(item_path)  # Recursively call the function for subdirectories
             
     return list_dir_paths_replica, list_file_paths_replica, list_dir_replica, list_file_replica
+
+get_source_content(source_path)
+get_replica_content(replica_path)
 
 items_not_in_replica = {"Files": [], "Dirs": []}
 
@@ -91,8 +97,6 @@ def log_remove(log_path, log_text):
     logger = logging.getLogger('removeFileOrFolder')
     logger.info(log_text)
 
-log_path='/home/alepy/Folder-Synchronizer/logs.txt'
-
 def create_file(path, log_path):
     name=path.split('/')[-1]
     folder_path=os.path.dirname(path)
@@ -116,7 +120,6 @@ def create_dir(path, log_path):
 def copy(path1, path2, log_path):
     name=path1.split('/')[-1]
     folder_path1=os.path.dirname(path1)
-    folder_path2=os.path.dirname(path2)
     if os.path.exists(path1):
         if os.path.isfile(path1):
             os.system("cp " + path1 + " " + path2)
@@ -170,3 +173,16 @@ def remove(path, log_path):
 #remove('/home/alepy/Folder-Synchronizer/z/abc.txt', log_path)
 #remove('/home/alepy/Folder-Synchronizer/z', log_path)
 
+check_files_and_folders(list_file_source, list_file_replica, list_dir_source, list_dir_replica)
+
+def to_sync():
+    for files in items_not_in_replica.items():
+        #print(files)
+        for sec in files:
+            if type(sec)=='<class "str">':
+                pass
+            elif type(sec)=='<class "list">':
+                print(sec)
+        
+
+to_sync()
