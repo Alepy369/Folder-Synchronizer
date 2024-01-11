@@ -12,9 +12,6 @@ from sync.sync import (
     create_dir,
     copy,
     remove,
-    log_create,
-    log_copy,
-    log_remove,
 )
 
 source_path = '/home/alepy/Folder-Synchronizer/source'
@@ -23,13 +20,6 @@ log_file_path= '/home/alepy/Folder-Synchronizer/logs.txt'
 
 def main(source_path, replica_path, sync_interval, log_file_path):
 
-    print("=====================================")
-    print(" _    _            _                 ")
-    print("| |  | |          | |                ")
-    print("| |__| | __ _  ___| | __             ")
-    print("|  __  |/ _` |/ __| |/ /             ")
-    print("| |  | | (_| | (__|   <              ")
-    print("|_|  |_|\\__,_|\\___|_|\\_\\             ")
     print("                                     ")
     print("=====================================")
     print("  Welcome to the Folder Synchronizer  ")
@@ -52,6 +42,7 @@ def main(source_path, replica_path, sync_interval, log_file_path):
         if option == '1':
             print('Syncing folders...')
     
+
         elif option == '2':
             print('Checking for unsynced items...')            
 
@@ -62,7 +53,7 @@ def main(source_path, replica_path, sync_interval, log_file_path):
             # Check content missing in replica folder
             items_not_in_replica=check_files_and_folders(list_file_source, list_file_replica, list_dir_source, list_dir_replica)
 
-            user_input = input('Do you want to sync folders? (y/n) ')
+            user_input = input('Do you want to sync folders? (y/n) -> ')
             if user_input.lower() == 'y':
                 print('Syncing folders...')
                 # Add your synchronization logic here
@@ -79,25 +70,50 @@ def main(source_path, replica_path, sync_interval, log_file_path):
             list_file_replica.clear()
             items_not_in_replica = {"Files": [], "Dirs": []}
     
+
         elif option == '3':
-            print('Creating a file or folder...')
+            inpt=input("Creating a file or a folder? ")
+            if inpt.lower() == 'file':
+                print('Creating file...')
+                dir_path=input('Where? (dir path "/home/...") -> ')
+                name=input('File name? -> ')
+                path=dir_path + "/" + name
+                create_file(path, log_file_path)
+                print(f'{name} created...')
+            elif inpt.lower() == 'folder':
+                print('Creating folder...')
+                dir_path=input('Where? (full path "/home/...") -> ')
+                create_dir(dir_path, log_file_path)
+                name=dir_path.split('/')[-1]
+                print(f'{name} created...')
+            else:
+                print('Invalid option. Try again.')
             
-    
+
         elif option == '4':
             print('Copying a file or folder...')
+            path1=input("Source (full path) -> ")
+            path2=input("Destination (full path) -> ")
+            copy(path1, path2, log_file_path)
+            print(f'Source {path1} copied to {path2}')
             
-    
+
         elif option == '5':
             print('Removing a file or folder...')
+            path=input("Full path -> ")
+            remove(path, log_file_path)
+            name=path.split('/')[-1]
+            folder_path=os.path.dirname(path)
+            print(f'{name} removed from {folder_path}')
             
-        
+            
         elif option == '6':
             print(f'Periodicaly syncing every {sync_interval} minutes...')
             with open(log_file_path) as file:
                 lines = file.readlines()
                 for line in reversed(lines):
                     if "Initializing Folder Synchronizer" in line:
-                        time=line.strip().split(" ")[0:2]
+                        time=line.strip().split(" ")[1]
                         time_stamp=line.strip().split(" ")[0] + " " + line.strip().split(" ")[1]
                         print(f'Starting time: {time}')
                         last_sync_time = datetime.datetime.strptime(time_stamp, "%m/%d/%Y %H:%M:%S")
@@ -113,6 +129,7 @@ def main(source_path, replica_path, sync_interval, log_file_path):
                             print('Syncing folders...')
                     break
         
+
         elif option.lower() == 'q':
             print('Quitting...')
             sys.exit(0)
