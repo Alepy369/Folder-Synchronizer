@@ -160,3 +160,35 @@
 11/01/2024 20:09:56 Thu -- REMOVING FILE -- "def.txt" from "/home/alepy/Folder-Synchronizer/z"
 11/01/2024 20:09:56 Thu -- REMOVING FILE -- "abc.txt" from "/home/alepy/Folder-Synchronizer/z"
 11/01/2024 20:10:14 Thu -- REMOVING EMPTY FOLDER -- "z" from "/home/alepy/Folder-Synchronizer"
+11/01/2024 20:16:10 Thu Initializing Folder Synchronizer
+11/01/2024 20:17:35 Thu Initializing Folder Synchronizer
+11/01/2024 20:17:56 Thu Initializing Folder Synchronizer
+11/01/2024 20:18:59 Thu Initializing Folder Synchronizer
+11/01/2024 20:19:19 Thu Initializing Folder Synchronizer
+11/01/2024 20:22:02 Thu Initializing Folder Synchronizer
+11/01/2024 20:22:38 Thu -- CREATING FILE -- "abc.txt" in "/home/alepy/Folder-Synchronizer"
+11/01/2024 20:24:53 Thu Initializing Folder Synchronizer
+11/01/2024 20:26:00 Thu -- CREATING FILE -- "blablabla.txt" in "/home/alepy/Folder-Synchronizer"
+11/01/2024 20:27:31 Thu Initializing Folder Synchronizer
+11/01/2024 20:28:03 Thu -- CREATING FILE -- "bla.txt" in "/home/alepy/Folder-Synchronizer"
+11/01/2024 20:30:01 Thu Initializing Folder Synchronizer
+11/01/2024 20:30:15 Thu -- CREATING FILE -- "y.txt" in "/home/alepy/Folder-Synchronizer"
+11/01/2024 20:31:58 Thu Initializing Folder Synchronizer
+11/01/2024 20:32:22 Thu -- CREATING FOLDER -- "aba" in "/home/alepy/Folder-Synchronizer"
+11/01/2024 20:33:05 Thu -- CREATING FILE -- "gimme.txt" in "/home/alepy/Folder-Synchronizer/aba"
+11/01/2024 20:33:37 Thu Initializing Folder Synchronizer
+11/01/2024 20:34:19 Thu -- CREATING FILE -- "beat_it.txt" in "/home/alepy/Folder-Synchronizer"
+11/01/2024 20:45:03 Thu Initializing Folder Synchronizer
+11/01/2024 20:45:51 Thu -- CREATING FILE -- "bla.txt" in "/home/alepy/Folder-Synchronizer"
+11/01/2024 20:46:41 Thu -- COPYING FILE -- "bla.txt" from "/home/alepy/Folder-Synchronizer" to "/home/alepy/Folder-Synchronizer/alb.txt"
+11/01/2024 20:50:27 Thu Initializing Folder Synchronizer
+11/01/2024 20:50:50 Thu Initializing Folder Synchronizer
+11/01/2024 20:51:14 Thu -- REMOVING FILE -- "alb.txt" from "/home/alepy/Folder-Synchronizer"
+11/01/2024 20:52:06 Thu Initializing Folder Synchronizer
+11/01/2024 20:54:37 Thu Initializing Folder Synchronizer
+11/01/2024 20:54:58 Thu -- REMOVING FILE -- "bla.txt" from "/home/alepy/Folder-Synchronizer"
+11/01/2024 20:56:17 Thu -- CREATING FOLDER -- "y" in "/home/alepy/Folder-Synchronizer"
+11/01/2024 20:56:57 Thu -- REMOVING EMPTY FOLDER -- "y" from "/home/alepy/Folder-Synchronizer"
+11/01/2024 20:57:15 Thu -- CREATING FOLDER -- "y" in "/home/alepy/Folder-Synchronizer"
+11/01/2024 20:57:27 Thu -- CREATING FILE -- "abc.txt" in "/home/alepy/Folder-Synchronizer/y"
+11/01/2024 20:57:51 Thu -- REMOVING NON EMPTY FOLDER -- "y" from "/home/alepy/Folder-Synchronizer"
