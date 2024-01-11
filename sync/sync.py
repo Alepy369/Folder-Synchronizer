@@ -1,11 +1,6 @@
 import os 
-import sys
 import logging
-
-
-source_path = '/home/alepy/Folder-Synchronizer/source'
-replica_path = '/home/alepy/Folder-Synchronizer/replica'
-
+import path
 
 list_file_paths_source=[]
 list_dir_paths_source=[]
@@ -35,7 +30,6 @@ def get_source_content(directory):
     
     return list_file_paths_source, list_dir_paths_source, list_file_source, list_dir_source
 
-
 def get_replica_content(directory):
 
     for item in os.listdir(directory):
@@ -52,9 +46,6 @@ def get_replica_content(directory):
             get_source_content(item_path)  # Recursively call the function for subdirectories
             
     return list_dir_paths_replica, list_file_paths_replica, list_dir_replica, list_file_replica
-
-#get_source_content(source_path)
-#get_replica_content(replica_path)
 
 items_not_in_replica = {"Files": [], "Dirs": []}
 
@@ -85,35 +76,97 @@ def check_files_and_folders(list_file_source, list_file_replica, list_dir_source
                     
     return items_not_in_replica
 
-
-def create_dicts():
-    
-    dict_paths={}
-    dict_files_and_folders={}
-
-    dict_paths["Files_from_sorce"]=list_file_paths_source
-    dict_paths["Folders_from_sorce"]=list_dir_paths_source
-    dict_paths["Files_from_replica"]=list_file_paths_replica
-    dict_paths["Files_from_replica"]=list_dir_paths_replica
-
-    dict_files_and_folders["Files_from_sorce"]=list_file_source
-    dict_files_and_folders["Folders_from_sorce"]=list_dir_source
-    dict_files_and_folders["Files_from_replica"]=list_file_replica
-    dict_files_and_folders["Files_from_replica"]=list_dir_replica
-
-#create_dicts()
-
-def log_create():
-    logging.basicConfig(filename='logs.txt', encoding='utf-8', format='%(asctime)s %(message)s', datefmt='%d/%m/%Y %H:%M:%S %a', level=logging.INFO) 
+def log_create(log_path, log_text):
+    logging.basicConfig(filename=log_path, encoding='utf-8', format='%(asctime)s %(message)s', datefmt='%d/%m/%Y %H:%M:%S %a', level=logging.INFO) 
     logger = logging.getLogger('createFileOrFolder')
-    logger.info('Created a file or folder')
+    logger.info(log_text)
 
-def log_copy():
-    logging.basicConfig(filename='logs.txt', encoding='utf-8', format='%(asctime)s %(message)s', datefmt='%d/%m/%Y %H:%M:%S %a', level=logging.INFO) 
+def log_copy(log_path, log_text):
+    logging.basicConfig(filename=log_path, encoding='utf-8', format='%(asctime)s %(message)s', datefmt='%d/%m/%Y %H:%M:%S %a', level=logging.INFO) 
     logger = logging.getLogger('copyFileOrFolder')
-    logger.info('Copied a file or folder')
-
-def log_remove():
-    logging.basicConfig(filename='logs.txt', encoding='utf-8', format='%(asctime)s %(message)s', datefmt='%d/%m/%Y %H:%M:%S %a', level=logging.INFO) 
+    logger.info(log_text)
+    
+def log_remove(log_path, log_text):
+    logging.basicConfig(filename=log_path, encoding='utf-8', format='%(asctime)s %(message)s', datefmt='%d/%m/%Y %H:%M:%S %a', level=logging.INFO) 
     logger = logging.getLogger('removeFileOrFolder')
-    logger.info('Removed a file or folder')
+    logger.info(log_text)
+
+log_path='/home/alepy/Folder-Synchronizer/logs.txt'
+
+def create_file(path, log_path):
+    name=path.split('/')[-1]
+    folder_path=os.path.dirname(path)
+    if os.path.exists(path) == False:
+        os.system("touch " + path)
+        log_text=f'-- CREATING FILE -- "{name}" in "{folder_path}"'
+        log_create(log_path, log_text)
+    else:
+        print(f'File "{name}" already exists')
+
+def create_dir(path, log_path):
+    name=path.split('/')[-1]
+    folder_path=os.path.dirname(path)
+    if os.path.exists(path) == False:
+        os.system("mkdir " + path)
+        log_text=f'-- CREATING FOLDER -- "{name}" in "{folder_path}"'
+        log_create(log_path, log_text)
+    else:
+        print(f'Folder "{name}" already exists')
+
+def copy(path1, path2, log_path):
+    name=path1.split('/')[-1]
+    folder_path1=os.path.dirname(path1)
+    folder_path2=os.path.dirname(path2)
+    if os.path.exists(path1):
+        if os.path.isfile(path1):
+            os.system("cp " + path1 + " " + path2)
+            log_text=f'-- COPYING FILE -- "{name}" from "{folder_path1}" to "{path2}"'
+            log_copy(log_path, log_text)
+        elif os.path.isdir(path1):
+            os.system("cp -r " + path1 + " " + path2)
+            log_text=f'-- COPYING FOLDER -- "{name}" from "{folder_path1}" to "{path2}"'
+            log_copy(log_path, log_text)
+    else:
+        print(f'File or folder "{name}" does not exist')
+
+def remove(path, log_path):
+    name=path.split('/')[-1]
+    folder_path=os.path.dirname(path)
+    if os.path.exists(path):
+        if os.path.isfile(path):
+            os.system("rm " + path)
+            log_text=f'-- REMOVING FILE -- "{name}" from "{folder_path}"'
+            log_remove(log_path, log_text)
+        elif os.path.isdir(path):
+            if not os.listdir(path):
+                print('Deleting empty folder... proceeding')
+                os.system("rm -d " + path)
+                log_text=f'-- REMOVING EMPTY FOLDER -- "{name}" from "{folder_path}"'
+                log_remove(log_path, log_text)
+            else:
+                print('ALERT!')
+                y=input(f'The folder "{name}" is not empty, do you want to delete it and all its content? (y/n) ')    
+                if y.lower()=='y':
+                    print('Deleting folder and all its content')
+                    os.system("rm -r " + path)
+                    log_text=f'-- REMOVING NON EMPTY FOLDER -- "{name}" from "{folder_path}"'
+                    log_remove(log_path, log_text)
+                elif y.lower()=='n':
+                    pass
+
+    else:
+        print(f'File or folder "{name}" does not exist')
+
+#create_dir('/home/alepy/Folder-Synchronizer/abc', log_path)
+#create_file('/home/alepy/Folder-Synchronizer/def.txt', log_path)
+#create_file('/home/alepy/Folder-Synchronizer/abc/def.txt', log_path)
+    
+#copy('/home/alepy/Folder-Synchronizer/abc', '/home/alepy/Folder-Synchronizer/z', log_path)
+#copy('/home/alepy/Folder-Synchronizer/abc/def.txt', '/home/alepy/Folder-Synchronizer/z/abc.txt', log_path)
+        
+#remove('/home/alepy/Folder-Synchronizer/def.txt', log_path)
+#remove('/home/alepy/Folder-Synchronizer/abc', log_path)
+#remove('/home/alepy/Folder-Synchronizer/z/def.txt', log_path)
+#remove('/home/alepy/Folder-Synchronizer/z/abc.txt', log_path)
+#remove('/home/alepy/Folder-Synchronizer/z', log_path)
+
