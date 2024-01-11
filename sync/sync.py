@@ -19,6 +19,7 @@ list_file_replica=[]
 
 
 def get_source_content(directory):
+
     for item in os.listdir(directory):
         #print(item)
         item_path = os.path.join(directory, item)
@@ -31,8 +32,12 @@ def get_source_content(directory):
             list_dir_paths_source.append(item_path)
             list_dir_source.append(item)
             get_source_content(item_path)  # Recursively call the function for subdirectories
+    
+    return list_file_paths_source, list_dir_paths_source, list_file_source, list_dir_source
+
 
 def get_replica_content(directory):
+
     for item in os.listdir(directory):
         #print(item)
         item_path = os.path.join(directory, item)
@@ -45,38 +50,58 @@ def get_replica_content(directory):
             list_dir_paths_replica.append(item_path)
             list_dir_replica.append(item)
             get_source_content(item_path)  # Recursively call the function for subdirectories
+            
+    return list_dir_paths_replica, list_file_paths_replica, list_dir_replica, list_file_replica
 
-get_source_content(source_path)
-get_replica_content(replica_path)
+#get_source_content(source_path)
+#get_replica_content(replica_path)
 
-items_not_in_replica={}
-items_not_in_replica["Files"] = []
-items_not_in_replica["Dirs"] = [] 
+items_not_in_replica = {"Files": [], "Dirs": []}
 
-def check_files_and_folders():
+def check_files_and_folders(list_file_source, list_file_replica, list_dir_source, list_dir_replica):
 
     for file_name in list_file_source:
         try:
             if file_name not in list_file_replica:
-                #print(f'The file "{file_name}" is not on replica folder')
+                print(f'The file "{file_name}" is not on replica folder')
                 items_not_in_replica['Files'].append(file_name)
+            else:
+                pass
         
         except FileNotFoundError as e:
             print(e)
+    
 
     for dir_name in list_dir_source:
         try:
             if dir_name not in list_dir_replica:
-                #print(f'The folder "{dir_name}" is not on replica folder')
+                print(f'The folder "{dir_name}" is not on replica folder')
                 items_not_in_replica['Dirs'].append(dir_name)
+            else:
+                pass
         
         except FileNotFoundError as e:
             print(e)
-            
-    print(items_not_in_replica)
+                    
+    return items_not_in_replica
 
-check_files_and_folders()
-print(items_not_in_replica)
+
+def create_dicts():
+    
+    dict_paths={}
+    dict_files_and_folders={}
+
+    dict_paths["Files_from_sorce"]=list_file_paths_source
+    dict_paths["Folders_from_sorce"]=list_dir_paths_source
+    dict_paths["Files_from_replica"]=list_file_paths_replica
+    dict_paths["Files_from_replica"]=list_dir_paths_replica
+
+    dict_files_and_folders["Files_from_sorce"]=list_file_source
+    dict_files_and_folders["Folders_from_sorce"]=list_dir_source
+    dict_files_and_folders["Files_from_replica"]=list_file_replica
+    dict_files_and_folders["Files_from_replica"]=list_dir_replica
+
+#create_dicts()
 
 def log_create():
     logging.basicConfig(filename='logs.txt', encoding='utf-8', format='%(asctime)s %(message)s', datefmt='%d/%m/%Y %H:%M:%S %a', level=logging.INFO) 
