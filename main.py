@@ -2,6 +2,7 @@
 import os
 import sys
 import logging
+import datetime
  
 from sync.sync import (
     get_source_content,
@@ -36,6 +37,7 @@ def main(source_path, replica_path, sync_interval, log_file_path):
     print("    3 - Create a file or folder      ")
     print("    4 - Copy a file or folder        ")
     print("    5 - Remove a file or folder      ")
+    print("    6 - Periodicaly sync             ")
     print("                                     ")
     print("    q - Quit                         ")
     print("                                     ")
@@ -47,13 +49,31 @@ def main(source_path, replica_path, sync_interval, log_file_path):
             print('Syncing folders...')
     
         elif option == '2':
-            print('Checking for unsynced items...')
+            print('Checking for unsynced items...')            
+
             # Get content from source and replica folders
-            get_source_content(source_path)
-            get_replica_content(replica_path)
+            list_file_paths_source, list_dir_paths_source, list_file_source, list_dir_source = get_source_content(source_path)
+            list_dir_paths_replica, list_file_paths_replica, list_dir_replica, list_file_replica = get_replica_content(replica_path)
 
             # Check content missing in replica folder
-            check_files_and_folders()
+            items_not_in_replica=check_files_and_folders(list_file_source, list_file_replica, list_dir_source, list_dir_replica)
+
+            user_input = input('Do you want to sync folders? (y/n) ')
+            if user_input.lower() == 'y':
+                print('Syncing folders...')
+                # Add your synchronization logic here
+
+            elif user_input.lower() == 'n':
+                pass
+
+            else:
+                print('Invalid option. Please choose a valid option.')
+
+            list_file_source.clear()
+            list_dir_source.clear()
+            list_dir_replica.clear()
+            list_file_replica.clear()
+            items_not_in_replica = {"Files": [], "Dirs": []}
     
         elif option == '3':
             print('Creating a file or folder...')
@@ -66,6 +86,29 @@ def main(source_path, replica_path, sync_interval, log_file_path):
         elif option == '5':
             print('Removing a file or folder...')
             log_remove()
+        
+        elif option == '6':
+            print(f'Periodicaly syncing every {sync_interval} minutes...')
+            with open(log_file_path) as file:
+                lines = file.readlines()
+                for line in reversed(lines):
+                    if "Initializing Folder Synchronizer" in line:
+                        time=line.strip().split(" ")[0:2]
+                        time_stamp=line.strip().split(" ")[0] + " " + line.strip().split(" ")[1]
+                        print(f'Starting time: {time}')
+                        last_sync_time = datetime.datetime.strptime(time_stamp, "%m/%d/%Y %H:%M:%S")
+                        current_time = datetime.datetime.now().replace(microsecond=0, second=0,)
+
+                        current_time_aligned = current_time.replace(year=last_sync_time.year, month=last_sync_time.month, day=last_sync_time.day)
+
+                        print(last_sync_time)
+                        print(current_time_aligned)
+                        time_difference = current_time_aligned - last_sync_time
+                        print(time_difference.total_seconds())
+                        if sync_interval == 60 and time_difference.total_seconds() >= 3600:
+                            print('Syncing folders...')
+                    break
+            
     
         elif option.lower() == 'q':
             print('Quitting...')
@@ -77,13 +120,13 @@ def main(source_path, replica_path, sync_interval, log_file_path):
 
 if __name__ == "__main__":
 
-    if len(sys.argv) != 5:
-        print("Usage: python main.py <source_path> <replica_path> <sync_interval> <log_file_path>")
-        sys.exit(1)
+    # if len(sys.argv) != 5:
+    #     print("Usage: python main.py <source_path> <replica_path> <sync_interval> <log_file_path>")
+    #     sys.exit(1)
 
-    source_path = sys.argv[1]
-    replica_path = sys.argv[2]
-    sync_interval = sys.argv[3]
-    log_file_path = sys.argv[4]
+    source_path = source_path #sys.argv[1]
+    replica_path = replica_path #sys.argv[2]
+    sync_interval = 60 #sys.argv[3]
+    log_file_path = log_file_path #sys.argv[4]
 
     main(source_path, replica_path, sync_interval, log_file_path)
