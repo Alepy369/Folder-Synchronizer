@@ -3,6 +3,7 @@ import os
 import sys
 import logging
 import datetime
+import time
 
 from sync.sync import (
     get_source_content,
@@ -12,6 +13,7 @@ from sync.sync import (
     create_dir,
     copy,
     remove,
+    to_sync
 )
 
 source_path = '/home/alepy/Folder-Synchronizer/source'
@@ -109,25 +111,29 @@ def main(source_path, replica_path, sync_interval, log_file_path):
             
         elif option == '6':
             print(f'Periodicaly syncing every {sync_interval} minutes...')
-            with open(log_file_path) as file:
-                lines = file.readlines()
-                for line in reversed(lines):
-                    if "Initializing Folder Synchronizer" in line:
-                        time=line.strip().split(" ")[1]
-                        time_stamp=line.strip().split(" ")[0] + " " + line.strip().split(" ")[1]
-                        print(f'Starting time: {time}')
-                        last_sync_time = datetime.datetime.strptime(time_stamp, "%m/%d/%Y %H:%M:%S")
-                        current_time = datetime.datetime.now().replace(microsecond=0, second=0,)
 
-                        current_time_aligned = current_time.replace(year=last_sync_time.year, month=last_sync_time.month, day=last_sync_time.day)
+            time.sleep(sync_interval * 60)
 
-                        print(last_sync_time)
-                        print(current_time_aligned)
-                        time_difference = current_time_aligned - last_sync_time
-                        print(time_difference.total_seconds())
-                        if sync_interval == 60 and time_difference.total_seconds() >= 3600:
-                            print('Syncing folders...')
-                    break
+            to_sync(source_path, replica_path)
+            # with open(log_file_path) as file:
+            #     lines = file.readlines()
+            #     for line in reversed(lines):
+            #         if "Initializing Folder Synchronizer" in line:
+            #             time=line.strip().split(" ")[1]
+            #             time_stamp=line.strip().split(" ")[0] + " " + line.strip().split(" ")[1]
+            #             print(f'Starting time: {time}')
+            #             last_sync_time = datetime.datetime.strptime(time_stamp, "%m/%d/%Y %H:%M:%S")
+            #             current_time = datetime.datetime.now().replace(microsecond=0, second=0,)
+
+            #             current_time_aligned = current_time.replace(year=last_sync_time.year, month=last_sync_time.month, day=last_sync_time.day)
+
+            #             print(last_sync_time)
+            #             print(current_time_aligned)
+            #             time_difference = current_time_aligned - last_sync_time
+            #             print(time_difference.total_seconds())
+            #             if sync_interval == 60 and time_difference.total_seconds() >= 3600:
+            #                 print('Syncing folders...')
+            #         break
         
 
         elif option.lower() == 'q':
