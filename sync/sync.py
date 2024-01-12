@@ -15,6 +15,7 @@ list_file_replica=[]
 
 source_path = '/home/alepy/Folder-Synchronizer/source'
 replica_path = '/home/alepy/Folder-Synchronizer/replica'
+log_file_path= '/home/alepy/Folder-Synchronizer/logs.txt'
 
 def get_source_content(directory):
 
@@ -55,13 +56,17 @@ get_replica_content(replica_path)
 
 items_not_in_replica = {"Files": [], "Dirs": []}
 
-def check_files_and_folders(list_file_source, list_file_replica, list_dir_source, list_dir_replica):
+def check_files_and_folders():
 
-    for file_name in list_file_source:
+    for file_path in list_file_paths_source:
+        replica_path=file_path.replace("/source","/replica")
+        #print(replica_path)
+        #print(file_path)
         try:
-            if file_name not in list_file_replica:
-                print(f'The file "{file_name}" is not on replica folder')
-                items_not_in_replica['Files'].append(file_name)
+            if replica_path not in list_file_paths_replica:
+                file_name=file_path.split('/')[-1]
+                #print(f'The file "{file_name}" is not on replica folder')
+                items_not_in_replica['Files'].append(file_path)
             else:
                 pass
         
@@ -69,11 +74,13 @@ def check_files_and_folders(list_file_source, list_file_replica, list_dir_source
             print(e)
     
 
-    for dir_name in list_dir_source:
+    for dir_path in list_dir_paths_source:
+        replica_path=dir_path.replace("/source","/replica")
         try:
-            if dir_name not in list_dir_replica:
-                print(f'The folder "{dir_name}" is not on replica folder')
-                items_not_in_replica['Dirs'].append(dir_name)
+            if replica_path not in list_dir_paths_replica:
+                dir_name=dir_path.split('/')[-1]
+                #print(f'The folder "{dir_name}" is not on replica folder')
+                items_not_in_replica['Dirs'].append(dir_path)
             else:
                 pass
         
@@ -173,16 +180,50 @@ def remove(path, log_path):
 #remove('/home/alepy/Folder-Synchronizer/z/abc.txt', log_path)
 #remove('/home/alepy/Folder-Synchronizer/z', log_path)
 
-check_files_and_folders(list_file_source, list_file_replica, list_dir_source, list_dir_replica)
+check_files_and_folders()
 
 def to_sync():
-    for files in items_not_in_replica.items():
-        #print(files)
-        for sec in files:
-            if type(sec)=='<class "str">':
-                pass
-            elif type(sec)=='<class "list">':
-                print(sec)
-        
 
+    for category, items in items_not_in_replica.items():
+        for dir_path in items:
+            if os.path.isdir(dir_path):
+                folder_name=dir_path.split('/')[-1]
+                replica_path=dir_path.replace("/source","/replica")
+                create_dir(replica_path, log_file_path)
+
+    for category, items in items_not_in_replica.items():
+        for file_path in items:
+            if os.path.isfile(file_path):
+                file_name=file_path.split('/')[-1]
+                replica_path=file_path.replace("/source","/replica")
+                create_file(replica_path, log_file_path)
+    
+    for file_path_replica in list_file_paths_replica:
+        source_path=file_path_replica.replace("/replica","/source")
+        if source_path in list_file_paths_source:
+            copy(source_path, file_path_replica, log_file_path)
+
+    for file_path_replica in list_file_paths_replica:
+        source_path=file_path_replica.replace("/replica","/source")
+        if source_path not in list_file_paths_source:
+            remove(file_path_replica, log_file_path)
+    
+    for dir_path_replica in list_dir_paths_replica:
+        source_path=dir_path_replica.replace("/replica","/source")
+        if source_path not in list_dir_paths_source:
+            print(f'hey {dir_path_replica} is in replica but not on source')
+            print()
+            remove(dir_path_replica, log_file_path)
+            
 to_sync()
+
+'''
+se tiver na source e não na replica -> items_not_in_replica
+
+oq tá na source -> list_file_source, list_dir_source
+
+oq tá na replica -> list_file_replica, list_dir_replica
+'''
+
+#create_file('/home/alepy/Folder-Synchronizer/source/this_is_the_source.txt', log_file_path)
+#create_file('/home/alepy/Folder-Synchronizer/replica/this_is_the_source.txt', log_file_path)
