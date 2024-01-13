@@ -7,4 +7,3 @@ log = logging.getLogger(__name__)
 log.info('Initializing Folder Synchronizer')
 
 
-
