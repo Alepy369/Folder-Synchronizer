@@ -1,6 +1,5 @@
 import os 
 import logging
-import path
 import hashlib
 
 list_file_paths_source=[]
@@ -16,11 +15,6 @@ list_file_replica=[]
 list_file_hash_source=[]
 list_file_hash_replica=[]
 
-
-source_path = '/home/alepy/Folder-Synchronizer/source'
-replica_path = '/home/alepy/Folder-Synchronizer/replica'
-log_file_path= '/home/alepy/Folder-Synchronizer/logs.txt'
-
 def generate_sha256(file_path):
     sha256_hash = hashlib.sha256()
 
@@ -30,7 +24,7 @@ def generate_sha256(file_path):
 
     return sha256_hash.hexdigest()
 
-def get_source_content(directory, list_file_paths_source=None, list_dir_paths_source=None,
+def get_source_content(source_path, list_file_paths_source=None, list_dir_paths_source=None,
                         list_file_source=None, list_dir_source=None):
     
     # Initialize lists if not provided
@@ -43,8 +37,8 @@ def get_source_content(directory, list_file_paths_source=None, list_dir_paths_so
     if list_dir_source is None:
         list_dir_source = []
 
-    for item_s in os.listdir(directory):
-        item_path_s = os.path.join(directory, item_s)
+    for item_s in os.listdir(source_path):
+        item_path_s = os.path.join(source_path, item_s)
 
         if "/source" in item_path_s:
             if os.path.isfile(item_path_s):
@@ -59,9 +53,9 @@ def get_source_content(directory, list_file_paths_source=None, list_dir_paths_so
                 get_source_content(item_path_s, list_file_paths_source,
                                    list_dir_paths_source, list_file_source, list_dir_source)
 
-    return list_file_paths_source, list_dir_paths_source, list_file_source, list_dir_source, list_file_hash_source
+    return source_path, list_file_paths_source, list_dir_paths_source, list_file_source, list_dir_source, list_file_hash_source
 
-def get_replica_content(directory, list_dir_paths_replica=None, list_file_paths_replica=None, 
+def get_replica_content(replica_path, list_dir_paths_replica=None, list_file_paths_replica=None, 
                         list_dir_replica=None, list_file_replica=None):
     
     # Initialize lists if not provided
@@ -74,8 +68,8 @@ def get_replica_content(directory, list_dir_paths_replica=None, list_file_paths_
     if list_file_replica is None:
         list_file_replica = []
 
-    for item in os.listdir(directory):
-        item_path = os.path.join(directory, item)
+    for item in os.listdir(replica_path):
+        item_path = os.path.join(replica_path, item)
 
         if "/replica" in item_path:
             if os.path.isfile(item_path):
@@ -90,9 +84,9 @@ def get_replica_content(directory, list_dir_paths_replica=None, list_file_paths_
                 get_replica_content(item_path, list_dir_paths_replica, 
                                     list_file_paths_replica, list_dir_replica, list_file_replica)
 
-    return list_dir_paths_replica, list_file_paths_replica, list_dir_replica, list_file_replica, list_file_hash_replica
+    return replica_path, list_dir_paths_replica, list_file_paths_replica, list_dir_replica, list_file_replica, list_file_hash_replica
 
-def check_files_and_folders(list_file_paths_source, list_dir_paths_source,
+def check_files_and_folders(source_path, replica_path, list_file_paths_source, list_dir_paths_source,
                              list_file_paths_replica, list_dir_paths_replica):
     
     items_not_in_replica = {"Files": [], "Hashs": [], "Dirs": []}
@@ -205,7 +199,7 @@ def remove(path, log_path):
 
 def to_sync(result, source_path, replica_path, log_file_path):
 
-    print("Starting syncing files and folders")
+    print("Syncing files and folders")
 
     for category, items in result.items():
         for dir_path in items:
@@ -249,10 +243,10 @@ def to_sync(result, source_path, replica_path, log_file_path):
             remove(dir_path_replica, log_file_path)
             print(f'File {dir_name} removed')
 
-list_file_paths_source, list_dir_paths_source, list_file_source, list_dir_source, list_file_hash_source=get_source_content(source_path)
-list_dir_paths_replica, list_file_paths_replica, list_dir_replica, list_file_replica, list_file_hash_replica=get_replica_content(replica_path)
+s_path, list_file_paths_source, list_dir_paths_source, list_file_source, list_dir_source, list_file_hash_source=get_source_content('/home/alepy/Folder-Synchronizer/source')
+r_path, list_dir_paths_replica, list_file_paths_replica, list_dir_replica, list_file_replica, list_file_hash_replica=get_replica_content('/home/alepy/Folder-Synchronizer/replica')
 
-result = check_files_and_folders(list_file_paths_source, list_dir_paths_source,
-                                  list_file_paths_replica, list_dir_paths_replica)
+result = check_files_and_folders(s_path, r_path, list_file_paths_source, 
+                                 list_dir_paths_source, list_file_paths_replica, list_dir_paths_replica)
 
-to_sync(result, source_path, replica_path, log_file_path)
+# to_sync(result, source_path, replica_path, log_file_path)
