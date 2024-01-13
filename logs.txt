@@ -512,3 +512,9 @@
 13/01/2024 18:58:47 Sat Initializing Folder Synchronizer
 13/01/2024 18:59:17 Sat -- COPYING FILE -- "big_world.txt" from "/home/alepy/Folder-Synchronizer/source/world" to "/home/alepy/Folder-Synchronizer/replica/world/big_world.txt"
 13/01/2024 18:59:17 Sat -- COPYING FILE -- "this_is_the_source.txt" from "/home/alepy/Folder-Synchronizer/source" to "/home/alepy/Folder-Synchronizer/replica/this_is_the_source.txt"
+13/01/2024 19:07:18 Sat Initializing Folder Synchronizer
+13/01/2024 19:09:23 Sat Initializing Folder Synchronizer
+13/01/2024 19:18:26 Sat Initializing Folder Synchronizer
+13/01/2024 19:18:30 Sat Initializing Folder Synchronizer
+13/01/2024 19:19:05 Sat Initializing Folder Synchronizer
+13/01/2024 19:21:49 Sat Initializing Folder Synchronizer
