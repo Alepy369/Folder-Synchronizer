@@ -1,5 +1,5 @@
 # Folder-Synchronizer
-A backup program that syncs two different folders periodically, creating logs for every operation (start/create/copy/remove).
+Rest assured, your files are secure. Utilize Folder-Synchronizer to create checkpoints of your work and avoid any concerns about losing data.
 
 ## Setup & Installation
 
