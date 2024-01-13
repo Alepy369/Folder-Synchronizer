@@ -37,8 +37,8 @@ def main(source_path, replica_path, sync_interval, log_file_path):
     
     while True:
 
-        list_file_paths_source, list_dir_paths_source, list_file_source, list_dir_source=get_source_content(source_path)
-        list_dir_paths_replica, list_file_paths_replica, list_dir_replica, list_file_replica=get_replica_content(replica_path)
+        list_file_paths_source, list_dir_paths_source, list_file_source, list_dir_source, list_file_hash_source=get_source_content(source_path)
+        list_dir_paths_replica, list_file_paths_replica, list_dir_replica, list_file_replica, list_file_hash_replica=get_replica_content(replica_path)
 
         result = check_files_and_folders(list_file_paths_source, list_dir_paths_source, list_file_paths_replica, list_dir_paths_replica)
 
