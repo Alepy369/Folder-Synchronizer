@@ -143,7 +143,7 @@ def create_file(path, log_path):
         log_text=f'-- CREATING FILE -- "{name}" in "{folder_path}"'
         log_create(log_path, log_text)
     else:
-        print(f'File "{name}" already exists')
+        print(f'File "{name}" already exists!')
 
 def create_dir(path, log_path):
     name=path.split('/')[-1]
@@ -153,7 +153,7 @@ def create_dir(path, log_path):
         log_text=f'-- CREATING FOLDER -- "{name}" in "{folder_path}"'
         log_create(log_path, log_text)
     else:
-        print(f'Folder "{name}" already exists')
+        print(f'Folder "{name}" already exists!')
 
 def copy(path1, path2, log_path):
     name=path1.split('/')[-1]
@@ -168,7 +168,7 @@ def copy(path1, path2, log_path):
             log_text=f'-- COPYING FOLDER -- "{name}" from "{folder_path1}" to "{path2}"'
             log_copy(log_path, log_text)
     else:
-        print(f'File or folder "{name}" does not exist')
+        print(f'File or folder "{name}" does not exist!')
         
 def remove(path, log_path):
     name = os.path.basename(path)
@@ -195,11 +195,11 @@ def remove(path, log_path):
             #     elif user_input.lower() == 'n':
             #         pass
     else:
-        print(f'File or folder "{name}" does not exist')
+        print(f'File or folder "{name}" does not exist!')
 
 def to_sync(result, source_path, replica_path, log_file_path):
 
-    print("Syncing files and folders")
+    print("Syncing files and folders!")
 
     for category, items in result.items():
         for dir_path in items:
@@ -207,7 +207,7 @@ def to_sync(result, source_path, replica_path, log_file_path):
                 dir_name=dir_path.split('/')[-1]
                 replica_path=dir_path.replace("/source","/replica")
                 create_dir(replica_path, log_file_path)
-                print(f'Folder {dir_name} created')
+                print(f'    Folder {dir_name} created!')
 
     for category, items in result.items():
         for file_path in items:
@@ -215,7 +215,7 @@ def to_sync(result, source_path, replica_path, log_file_path):
                 file_name=file_path.split('/')[-1]
                 replica_path=file_path.replace("/source","/replica")
                 create_file(replica_path, log_file_path)
-                print(f'File {file_name} created')
+                print(f'    File {file_name} created!')
                 
     for file_path_replica in list_file_paths_replica:
         file_path_source = file_path_replica.replace("/replica", "/source")
@@ -227,21 +227,21 @@ def to_sync(result, source_path, replica_path, log_file_path):
 
             if source_hash != replica_hash:
                 copy(file_path_source, file_path_replica, log_file_path)
-                print(f'File {file_name} copied')
+                print(f'    File {file_name} copied!')
 
     for file_path_replica in list_file_paths_replica:
         file_path_source=file_path_replica.replace("/replica","/source")
         if file_path_source not in list_file_paths_source:
             file_name=file_path_source.split('/')[-1]
             remove(file_path_replica, log_file_path)
-            print(f'File {file_name} removed')
+            print(f'    File {file_name} removed!')
     
     for dir_path_replica in list_dir_paths_replica:
         dir_path_source=dir_path_replica.replace("/replica","/source")
         if dir_path_source not in list_dir_paths_source:
             dir_name=file_path_source.split('/')[-1]
             remove(dir_path_replica, log_file_path)
-            print(f'File {dir_name} removed')
+            print(f'    File {dir_name} removed!')
 
 s_path, list_file_paths_source, list_dir_paths_source, list_file_source, list_dir_source, list_file_hash_source=get_source_content('/home/alepy/Folder-Synchronizer/source')
 r_path, list_dir_paths_replica, list_file_paths_replica, list_dir_replica, list_file_replica, list_file_hash_replica=get_replica_content('/home/alepy/Folder-Synchronizer/replica')
@@ -249,4 +249,4 @@ r_path, list_dir_paths_replica, list_file_paths_replica, list_dir_replica, list_
 result = check_files_and_folders(s_path, r_path, list_file_paths_source, 
                                  list_dir_paths_source, list_file_paths_replica, list_dir_paths_replica)
 
-# to_sync(result, source_path, replica_path, log_file_path)
+to_sync(result, '/home/alepy/Folder-Synchronizer/source', '/home/alepy/Folder-Synchronizer/replica', '/home/alepy/Folder-Synchronizer/logs.txt')
