@@ -518,3 +518,28 @@
 13/01/2024 19:18:30 Sat Initializing Folder Synchronizer
 13/01/2024 19:19:05 Sat Initializing Folder Synchronizer
 13/01/2024 19:21:49 Sat Initializing Folder Synchronizer
+13/01/2024 19:34:31 Sat Initializing Folder Synchronizer
+13/01/2024 19:34:33 Sat Initializing Folder Synchronizer
+13/01/2024 19:39:15 Sat Initializing Folder Synchronizer
+13/01/2024 19:41:35 Sat -- COPYING FILE -- "this_is_the_source.txt" from "/home/alepy/Folder-Synchronizer/source" to "/home/alepy/Folder-Synchronizer/replica/this_is_the_source.txt"
+13/01/2024 19:53:52 Sat Initializing Folder Synchronizer
+13/01/2024 19:54:52 Sat -- COPYING FILE -- "this_is_the_source.txt" from "/home/alepy/Folder-Synchronizer/source" to "/home/alepy/Folder-Synchronizer/replica/this_is_the_source.txt"
+13/01/2024 19:55:13 Sat Initializing Folder Synchronizer
+13/01/2024 19:56:13 Sat -- COPYING FILE -- "this_is_the_source.txt" from "/home/alepy/Folder-Synchronizer/source" to "/home/alepy/Folder-Synchronizer/replica/this_is_the_source.txt"
+13/01/2024 19:56:13 Sat -- COPYING FILE -- "wow.txt" from "/home/alepy/Folder-Synchronizer/source/hello" to "/home/alepy/Folder-Synchronizer/replica/hello/wow.txt"
+13/01/2024 19:56:13 Sat -- COPYING FILE -- "u_found_me.txt" from "/home/alepy/Folder-Synchronizer/source/hello" to "/home/alepy/Folder-Synchronizer/replica/hello/u_found_me.txt"
+13/01/2024 19:57:13 Sat -- COPYING FILE -- "antonio_costa.txt" from "/home/alepy/Folder-Synchronizer/source/world/Portugal" to "/home/alepy/Folder-Synchronizer/replica/world/Portugal/antonio_costa.txt"
+13/01/2024 19:58:29 Sat Initializing Folder Synchronizer
+13/01/2024 19:59:30 Sat -- CREATING FOLDER -- "world" in "/home/alepy/Folder-Synchronizer/replica"
+13/01/2024 19:59:30 Sat -- CREATING FOLDER -- "Portugal" in "/home/alepy/Folder-Synchronizer/replica/world"
+13/01/2024 19:59:30 Sat -- CREATING FOLDER -- "hello" in "/home/alepy/Folder-Synchronizer/replica"
+13/01/2024 19:59:30 Sat -- CREATING FILE -- "big_world.txt" in "/home/alepy/Folder-Synchronizer/replica/world"
+13/01/2024 19:59:30 Sat -- CREATING FILE -- "antonio_costa.txt" in "/home/alepy/Folder-Synchronizer/replica/world/Portugal"
+13/01/2024 19:59:30 Sat -- CREATING FILE -- "this_is_the_source.txt" in "/home/alepy/Folder-Synchronizer/replica"
+13/01/2024 19:59:30 Sat -- CREATING FILE -- "wow.txt" in "/home/alepy/Folder-Synchronizer/replica/hello"
+13/01/2024 19:59:30 Sat -- CREATING FILE -- "u_found_me.txt" in "/home/alepy/Folder-Synchronizer/replica/hello"
+13/01/2024 19:59:30 Sat -- COPYING FILE -- "big_world.txt" from "/home/alepy/Folder-Synchronizer/source/world" to "/home/alepy/Folder-Synchronizer/replica/world/big_world.txt"
+13/01/2024 19:59:30 Sat -- COPYING FILE -- "antonio_costa.txt" from "/home/alepy/Folder-Synchronizer/source/world/Portugal" to "/home/alepy/Folder-Synchronizer/replica/world/Portugal/antonio_costa.txt"
+13/01/2024 19:59:30 Sat -- COPYING FILE -- "this_is_the_source.txt" from "/home/alepy/Folder-Synchronizer/source" to "/home/alepy/Folder-Synchronizer/replica/this_is_the_source.txt"
+13/01/2024 19:59:30 Sat -- COPYING FILE -- "wow.txt" from "/home/alepy/Folder-Synchronizer/source/hello" to "/home/alepy/Folder-Synchronizer/replica/hello/wow.txt"
+13/01/2024 19:59:30 Sat -- COPYING FILE -- "u_found_me.txt" from "/home/alepy/Folder-Synchronizer/source/hello" to "/home/alepy/Folder-Synchronizer/replica/hello/u_found_me.txt"
