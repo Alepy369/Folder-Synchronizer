@@ -243,10 +243,10 @@ def to_sync(result, source_path, replica_path, log_file_path):
             remove(dir_path_replica, log_file_path)
             print(f'    File {dir_name} removed!')
 
-s_path, list_file_paths_source, list_dir_paths_source, list_file_source, list_dir_source, list_file_hash_source=get_source_content('/home/alepy/Folder-Synchronizer/source')
-r_path, list_dir_paths_replica, list_file_paths_replica, list_dir_replica, list_file_replica, list_file_hash_replica=get_replica_content('/home/alepy/Folder-Synchronizer/replica')
+# s_path, list_file_paths_source, list_dir_paths_source, list_file_source, list_dir_source, list_file_hash_source=get_source_content('/home/alepy/Folder-Synchronizer/source')
+# r_path, list_dir_paths_replica, list_file_paths_replica, list_dir_replica, list_file_replica, list_file_hash_replica=get_replica_content('/home/alepy/Folder-Synchronizer/replica')
 
-result = check_files_and_folders(s_path, r_path, list_file_paths_source, 
-                                 list_dir_paths_source, list_file_paths_replica, list_dir_paths_replica)
+# result = check_files_and_folders(s_path, r_path, list_file_paths_source, 
+#                                  list_dir_paths_source, list_file_paths_replica, list_dir_paths_replica)
 
-to_sync(result, '/home/alepy/Folder-Synchronizer/source', '/home/alepy/Folder-Synchronizer/replica', '/home/alepy/Folder-Synchronizer/logs.txt')
+# to_sync(result, '/home/alepy/Folder-Synchronizer/source', '/home/alepy/Folder-Synchronizer/replica', '/home/alepy/Folder-Synchronizer/logs.txt')
