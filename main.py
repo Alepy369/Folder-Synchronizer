@@ -24,7 +24,7 @@ def main(source_path, replica_path, sync_interval, log_file_path):
 
         result = check_files_and_folders(source_path, replica_path, list_file_paths_source, 
                                  list_dir_paths_source, list_file_paths_replica, list_dir_paths_replica)
-        
+
         to_sync(result, list_file_paths_replica, list_dir_paths_replica, list_file_paths_source,
                  list_dir_paths_source, source_path, replica_path, log_file_path)
 
