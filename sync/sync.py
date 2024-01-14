@@ -103,6 +103,14 @@ def check_files_and_folders(source_path, replica_path, list_file_paths_source, l
                 items_not_in_replica['Files'].append(file_path)
                 items_not_in_replica['Hashs'].append(hash)
 
+            else:
+                file_name = os.path.basename(file_path)
+                s_hash=generate_sha256(file_path)
+                r_hash=generate_sha256(rep_path)
+
+                if s_hash != r_hash:
+                    print(f'    File {file_name} modified!')
+
         except FileNotFoundError as e:
             print(e)
 
@@ -184,22 +192,13 @@ def remove(path, log_path):
                 os.system("rm -d " + path)
                 log_text = f'-- REMOVING FOLDER -- "{name}" from "{folder_path}"'
                 log_remove(log_path, log_text)
-            # else:
-            #     print('ALERT!')
-            #     user_input = input(f'The folder "{name}" is not empty, are you sure you want to delete it? (y/n) ')
-            #     if user_input.lower() == 'y':
-            #         print('Deleting folder and all its content')
-            #         os.system("rm -r " + path)
-            #         log_text = f'-- REMOVING NON-EMPTY FOLDER -- "{name}" from "{folder_path}"'
-            #         log_remove(log_path, log_text)
-            #     elif user_input.lower() == 'n':
-            #         pass
     else:
         print(f'File or folder "{name}" does not exist!')
 
-def to_sync(result, source_path, replica_path, log_file_path):
+def to_sync(result, list_file_paths_replica, list_dir_paths_replica, list_file_paths_source,
+                 list_dir_paths_source, source_path, replica_path, log_file_path):
 
-    print("Syncing files and folders!")
+    print("Syncing...")
 
     for category, items in result.items():
         for dir_path in items:
@@ -239,9 +238,9 @@ def to_sync(result, source_path, replica_path, log_file_path):
     for dir_path_replica in list_dir_paths_replica:
         dir_path_source=dir_path_replica.replace("/replica","/source")
         if dir_path_source not in list_dir_paths_source:
-            dir_name=file_path_source.split('/')[-1]
+            dir_name=dir_path_source.split('/')[-1]
             remove(dir_path_replica, log_file_path)
-            print(f'    File {dir_name} removed!')
+            print(f'    Folder {dir_name} removed!')
 
 # s_path, list_file_paths_source, list_dir_paths_source, list_file_source, list_dir_source, list_file_hash_source=get_source_content('/home/alepy/Folder-Synchronizer/source')
 # r_path, list_dir_paths_replica, list_file_paths_replica, list_dir_replica, list_file_replica, list_file_hash_replica=get_replica_content('/home/alepy/Folder-Synchronizer/replica')
