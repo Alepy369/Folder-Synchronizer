@@ -1,6 +1,10 @@
 # Folder-Synchronizer
 Rest assured, your files are secure. Utilize Folder-Synchronizer to create checkpoints of your work and avoid any concerns about losing data.
 
+You can run it in:
+  - Windows
+  - Linux
+
 ## Setup & Installation
 
 Make sure you have the latest version of Python installed.
@@ -17,9 +21,10 @@ cd path/to/Folder-Synchronizer
 
 ## Usage
 
-Attention!
-The argument "sync_interval" has to be given in minutes.
+ATTENTION !!!
+
+ - Make sure to use the full paths and to give the "sync_interval" in minutes.
 
 ```bash
-python main.py source_path replica_path sync_interval log_file_path
+python main.py full/path/to/source full/path/to/replica sync_interval_minutes full/path/to/log_file
 ```
