@@ -1,6 +1,7 @@
 import os 
 import logging
 import hashlib
+import sys
 
 list_file_paths_source=[]
 list_dir_paths_source=[]
@@ -143,6 +144,11 @@ def log_remove(log_path, log_text):
     logger = logging.getLogger('removeFileOrFolder')
     logger.info(log_text)
 
+def log_recover(log_path, log_text):
+    logging.basicConfig(filename=log_path, encoding='utf-8', format='%(asctime)s %(message)s', datefmt='%d/%m/%Y %H:%M:%S %a', level=logging.INFO) 
+    logger = logging.getLogger('recoverFileOrFolder')
+    logger.info(log_text)
+
 def create_file(path, log_path):
     name=path.split('/')[-1]
     folder_path=os.path.dirname(path)
@@ -192,8 +198,35 @@ def remove(path, log_path):
                 os.system("rm -d " + path)
                 log_text = f'-- REMOVING FOLDER -- "{name}" from "{folder_path}"'
                 log_remove(log_path, log_text)
+            else:
+                print('ALERT!')
+                user_input = input(f'The folder "{name}" is not empty, are you sure you want to delete it? (y/n) ')
+                if user_input.lower() == 'y':
+                    print('Deleting folder and all its content')
+                    os.system("rm -r " + path)
+                    log_text = f'-- REMOVING NON-EMPTY FOLDER -- "{name}" from "{folder_path}"'
+                    log_remove(log_path, log_text)
+                    return True  # True if folder was successfully removed
+                elif user_input.lower() == 'n':
+                    rep=input('Do you want to recover it? (y/n) ')
+                    if rep.lower() == 'y':
+                        recovering_confirm="yes"
+                        sourc_path=path.replace('replica', 'source')
+                        copy(path, sourc_path, log_path)
+                        print(f'    Folder {name} recovered!')
+                        log_text = f'-- RECOVERING FOLDER -- "{name}" from "{folder_path}"'
+                        log_recover(log_path, log_text)
+                        return recovering_confirm
+                    elif rep.lower() == 'n':
+                        recovering_confirm="no"
+                        return recovering_confirm
+
+                    return False  # False if removal was canceled
     else:
-        print(f'File or folder "{name}" does not exist!')
+        print(f'File or folder "{name}" does not exist or it was removed already!')
+    
+    return True
+
 
 def to_sync(result, list_file_paths_replica, list_dir_paths_replica, list_file_paths_source,
                  list_dir_paths_source, source_path, replica_path, log_file_path):
@@ -228,19 +261,48 @@ def to_sync(result, list_file_paths_replica, list_dir_paths_replica, list_file_p
                 copy(file_path_source, file_path_replica, log_file_path)
                 print(f'    File {file_name} copied!')
 
-    for file_path_replica in list_file_paths_replica:
-        file_path_source=file_path_replica.replace("/replica","/source")
-        if file_path_source not in list_file_paths_source:
-            file_name=file_path_source.split('/')[-1]
-            remove(file_path_replica, log_file_path)
-            print(f'    File {file_name} removed!')
-    
+    removal_cancel = None 
+
     for dir_path_replica in list_dir_paths_replica:
-        dir_path_source=dir_path_replica.replace("/replica","/source")
+        dir_path_source = dir_path_replica.replace("/replica", "/source")
         if dir_path_source not in list_dir_paths_source:
-            dir_name=dir_path_source.split('/')[-1]
-            remove(dir_path_replica, log_file_path)
-            print(f'    Folder {dir_name} removed!')
+            dir_name = os.path.basename(dir_path_source)
+            if os.path.exists(dir_path_replica):
+                # Check if removal was successful before printing the message
+                if remove(dir_path_replica, log_file_path):
+                    print(f'    Folder {dir_name} removed!')
+                else:
+                    if remove(dir_path_replica, log_file_path)=='yes':
+                        pass
+                    elif remove(dir_path_replica, log_file_path)=='no':
+                        print(f'    Folder {dir_name} not recovered!')
+                    
+                    print(f'    Folder {dir_name} removal canceled!')
+                    print('')
+                    print(f'    CHECK THE REPLICA FOLDER!')
+                    sys.exit(1)
+
+            else:
+                print(f'    Folder {dir_name} was removed already!')
+
+
+    for file_path_replica in list_file_paths_replica:
+        file_path_source = file_path_replica.replace("/replica", "/source")
+        if file_path_source not in list_file_paths_source:
+            file_name = os.path.basename(file_path_source)
+            d_path = os.path.dirname(file_path_replica)
+            d_name = os.path.basename(d_path)
+            if os.path.exists(file_path_replica):
+                if removal_cancel is not None and d_name == removal_cancel:
+                    print(f'    File {file_name} removal canceled!')
+                else:
+                    # Check if removal was successful before printing the message
+                    if remove(file_path_replica, log_file_path):
+                        print(f'    File {file_name} removed!')
+                    else:
+                        print(f'    File {file_name} removal canceled!')
+            else:
+                print(f'    File {file_name} was removed already!')
 
 # s_path, list_file_paths_source, list_dir_paths_source, list_file_source, list_dir_source, list_file_hash_source=get_source_content('/home/alepy/Folder-Synchronizer/source')
 # r_path, list_dir_paths_replica, list_file_paths_replica, list_dir_replica, list_file_replica, list_file_hash_replica=get_replica_content('/home/alepy/Folder-Synchronizer/replica')
