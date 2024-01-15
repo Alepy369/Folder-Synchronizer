@@ -207,7 +207,7 @@ if platform.system() == 'Linux':
                     print('ALERT!')
                     user_input = input(f'The folder "{name}" is not empty, are you sure you want to delete it? (y/n) ')
                     if user_input.lower() == 'y':
-                        print('Deleting folder and all its content')
+                        print('Deleting folder and all its content...')
                         os.system("rm -r " + path)
                         log_text = f'-- REMOVING NON-EMPTY FOLDER -- "{name}" from "{folder_path}"'
                         log_remove(log_path, log_text)
@@ -497,7 +497,7 @@ elif platform.system() == 'Windows':
                     print('ALERT!')
                     user_input = input(f'The folder "{name}" is not empty, are you sure you want to delete it? (y/n) ')
                     if user_input.lower() == 'y':
-                        print('Deleting folder and all its content')
+                        print('Deleting folder and all its content...')
                         os.system(f'rmdir /S /Q "{path}"')
                         log_text = f'-- REMOVING NON-EMPTY FOLDER -- "{name}" from "{folder_path}"'
                         log_remove(log_path, log_text)
