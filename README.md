@@ -84,7 +84,7 @@ The folder "folder_name" is not empty, are you sure you want to delete it? (y/n)
 Deleting the folder and all its content...
   Folder "folder_name" not recovered!
   Folder "folder_name" removed!
-  (... content removal ...)  
+  (... content removed ...)  
 ```
 
 ### Recovering a nonempty folder
